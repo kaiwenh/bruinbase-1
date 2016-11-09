@@ -18,13 +18,15 @@
  */
 class BTLeafNode {
   public:
-   /**
-    * Insert the (key, rid) pair to the node.
-    * Remember that all keys inside a B+tree node should be kept sorted.
-    * @param key[IN] the key to insert
-    * @param rid[IN] the RecordId to insert
-    * @return 0 if successful. Return an error code if the node is full.
-    */
+    BTLeafNode();
+
+    /**
+        * Insert the (key, rid) pair to the node.
+        * Remember that all keys inside a B+tree node should be kept sorted.
+        * @param key[IN] the key to insert
+        * @param rid[IN] the RecordId to insert
+        * @return 0 if successful. Return an error code if the node is full.
+        */
     RC insert(int key, const RecordId& rid);
 
    /**
@@ -98,13 +100,16 @@ class BTLeafNode {
     */
     RC write(PageId pid, PageFile& pf);
 
-  private:
+    void print();
+
+private:
    /**
     * The main memory buffer for loading the content of the disk page 
     * that contains the node.
     */
     char buffer[PageFile::PAGE_SIZE];
-}; 
+    bool isBlockEmpty(int startingIndex);
+};
 
 
 /**
@@ -182,6 +187,8 @@ class BTNonLeafNode {
     * that contains the node.
     */
     char buffer[PageFile::PAGE_SIZE];
+    static int const NON_LEAF_PAIR_SIZE = sizeof(PageId) + sizeof(int);
+
 }; 
 
 #endif /* BTREENODE_H */

@@ -14,7 +14,6 @@
 #include <fstream>
 #include "Bruinbase.h"
 #include "SqlEngine.h"
-#include "RecordFile.h"
 
 using namespace std;
 
@@ -138,10 +137,11 @@ RC SqlEngine::load(const string &table, const string &loadfile, bool index) {
         RecordFile recordFile;
         recordFile.open(table + ".tbl", 'w');
         while (getline(myfile, line)) {
+            RecordId recordId;
             int key = 0;
             string value;
             parseLoadLine(line, key, value);
-            recordFile.append(key, value, (RecordId &) recordFile.endRid());
+            recordFile.append(key, value, recordId);
             count++;
         }
         myfile.close();
