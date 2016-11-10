@@ -41,28 +41,20 @@ int main()
 
 //////***********  Non Leaf node tests ************************////
 
-    PageId pageId = PageId();
-
     BTNonLeafNode a = BTNonLeafNode();
-    a.initializeRoot(pageId,4,pageId);
-
+    a.initializeRoot(10000,0,10000);
+    a.print();
     for(int i=0;i<=13;i=i+2){
-        a.insert(i,pageId);
+        cout<<"-->inserting key: " <<i<<endl;
+        a.insert(i,i);
+        a.print();
     }
 
-
-//////***********  splitting non leaf node ************************////
-
     a.print();
-    cout<<"-----------------\n";
-
     BTNonLeafNode b = BTNonLeafNode();
-
     int midKey;
-    a.insertAndSplit(1,pageId,b,midKey);
-
+    a.insertAndSplit(1,1,b,midKey);
     a.print();
-    cout<<"-----------------\n";
     b.print();
     cout<<"midkey is: " << midKey <<"\n";
   return 0;

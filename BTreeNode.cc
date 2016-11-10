@@ -357,7 +357,6 @@ RC BTNonLeafNode::insertAndSplit(int key, PageId pid, BTNonLeafNode& sibling, in
     int firstHalf;
     // the insertion key is the midkey
     if (position==ceil(keyCount/2) || position==floor(keyCount/2)){
-        cout<<"inside first if\n";
         firstHalf = ceil(keyCount/2);
         memcpy(sibling.buffer,&pid, sizeof(PageId));
         memcpy(sibling.buffer+sizeof(PageId), this->buffer + firstHalf*NON_LEAF_ENTRY_SIZE + sizeof(PageId),
@@ -367,8 +366,6 @@ RC BTNonLeafNode::insertAndSplit(int key, PageId pid, BTNonLeafNode& sibling, in
     }
     //key should be inserted in first half
     else if(position<floor(keyCount/2)){
-        cout<<"inside second if\n";
-
         firstHalf = floor(keyCount/2);
         memcpy(sibling.buffer+sizeof(PageId), this->buffer + firstHalf*NON_LEAF_ENTRY_SIZE + sizeof(PageId),
                (keyCount-firstHalf)*NON_LEAF_ENTRY_SIZE);
@@ -385,8 +382,6 @@ RC BTNonLeafNode::insertAndSplit(int key, PageId pid, BTNonLeafNode& sibling, in
     //key should be inserted in first half
     //position>ceil(keyCount/2)
     else{
-        cout<<"inside third if\n";
-
         firstHalf = ceil(keyCount/2);
         memcpy(sibling.buffer+sizeof(PageId), this->buffer + firstHalf*NON_LEAF_ENTRY_SIZE + sizeof(PageId),
                (keyCount-firstHalf)*NON_LEAF_ENTRY_SIZE);
@@ -499,15 +494,20 @@ bool BTNonLeafNode::isBlockEmpty(int startingIndex){
 
 void BTNonLeafNode::print()
 {
-    cout<<"non leaf capacity: " << NON_LEAF_CAPACITY <<"\n";
-
     cout<<"key count: " << getKeyCount() <<"\n";
+
+    int key;
+    PageId pid;
+
     char* temp=buffer;
+    readPidKey(0,pid,key);
+    cout<<"pid: " <<pid <<endl;
     for(int i=0;i<getKeyCount();i++)
     {
-        int key;
-        memcpy(&key,temp+ sizeof(PageId),sizeof(int));
+        readKeyPid(i,key,pid);
         cout<<"key: "<<key<<endl;
+        cout<<"pid: "<<pid<<endl;
         temp+=NON_LEAF_ENTRY_SIZE;
     }
+    cout<<"----------------------"<<endl;
 }
